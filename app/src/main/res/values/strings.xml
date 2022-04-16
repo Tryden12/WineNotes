@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">WineNotes</string>
+
+    <!-- Buttons -->
+    <string name="enter">Enter</string>
+
 </resources>
