@@ -4,4 +4,8 @@
     <!-- Buttons -->
     <string name="enter">Enter</string>
 
+
+    <!-- TextViews -->
+    <string name="sort_title">Sort by title</string>
+    <string name="sort_date">Sort by date modified</string>
 </resources>
