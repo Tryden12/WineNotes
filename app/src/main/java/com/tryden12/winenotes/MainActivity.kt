@@ -124,7 +124,7 @@ class MainActivity : AppCompatActivity() {
             withContext(Dispatchers.Main) {
                 notes.clear()
                 notes.addAll(results)
-                    adapter.notifyDataSetChanged()
+                adapter.notifyDataSetChanged()
             }
         }
 
