@@ -13,8 +13,13 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.tryden12.winenotes.database.AppDatabase
 import com.tryden12.winenotes.database.Note
 import com.tryden12.winenotes.databinding.ActivityMainBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
 
@@ -40,9 +45,13 @@ class MainActivity : AppCompatActivity() {
         // Bind adapter to recycler view
         adapter = MyAdapter()
         binding.myrecyclerview.adapter = adapter
+
+
+        loadAllNotes()
     }
 
-/********************     Options Menu    ********************************************************/
+
+    /********************     Options Menu    ********************************************************/
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.main_menu, menu)
@@ -94,7 +103,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-            val note = notes[position]
+            val note = notes[position].toString()
             holder.view.setText("This is a test")
         }
 
@@ -105,6 +114,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     /********************     Methods    ********************************************************/
+
+    private fun loadAllNotes() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val db = AppDatabase.getDatabase(applicationContext)
+            val dao = db.noteDao()
+            val results = dao.getAllNotes()
+
+            withContext(Dispatchers.Main) {
+                notes.clear()
+                notes.addAll(results)
+                    adapter.notifyDataSetChanged()
+            }
+        }
+
+    }
 
     private val startForAddResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
