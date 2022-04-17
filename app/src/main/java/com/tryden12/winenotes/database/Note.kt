@@ -11,4 +11,7 @@ class Note(
     @ColumnInfo() val notes : String,
     @ColumnInfo() val lastModified : String,
 ){
+    override fun toString(): String {
+        return "${title} ${notes} ${lastModified} ${id}"
+    }
 }
