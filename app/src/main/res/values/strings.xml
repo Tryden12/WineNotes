@@ -1,4 +1,5 @@
 <resources>
+    <!-- App name -->
     <string name="app_name">WineNotes</string>
 
     <!-- Buttons -->
@@ -8,4 +9,11 @@
     <!-- TextViews -->
     <string name="sort_title">Sort by title</string>
     <string name="sort_date">Sort by date modified</string>
+
+    <!-- Intent keys -->
+    <string name="intent_purpose_key">purpose</string>
+    <string name="intent_purpose_add_note">add</string>
+    <string name="intent_update_note">update</string>
+    <string name="intent_key_position">position</string>
+    <string name="intent_note_id">note id</string>
 </resources>

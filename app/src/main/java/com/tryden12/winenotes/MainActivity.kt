@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-
+    /********************     RecyclerView Inner Classes    ************************************/
     inner class MyViewHolder(val itemView : View) :
         RecyclerView.ViewHolder(itemView),
         View.OnClickListener, View.OnLongClickListener {
@@ -94,4 +94,9 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    /********************     Methods    ********************************************************/
+
+    private fun addNewNote() {
+        val intent = Intent(applicationContext, NoteActivity::class.java)
+    }
 }
