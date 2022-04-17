@@ -66,11 +66,6 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-
-
-
-
-
         override fun onClick(v: View?) {
             TODO("Not yet implemented")
         }
