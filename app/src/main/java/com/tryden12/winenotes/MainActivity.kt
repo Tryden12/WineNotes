@@ -47,6 +47,15 @@ class MainActivity : AppCompatActivity() {
         binding.myrecyclerview.adapter = adapter
 
 
+        // Add Note Button
+        binding.addNoteImageButton.setOnClickListener {
+            addNewNote()
+        }
+        binding.addNoteTextView.setOnClickListener {
+            addNewNote()
+        }
+
+
         loadAllNotes()
     }
 
