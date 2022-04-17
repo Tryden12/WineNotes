@@ -1,20 +1,26 @@
 package com.tryden12.winenotes
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.ImageView
+import android.widget.TextView
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.tryden12.winenotes.database.Note
 import com.tryden12.winenotes.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter : MyAdapter
+    private val notes = mutableListOf<Note>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +39,7 @@ class MainActivity : AppCompatActivity() {
 
         // Bind adapter to recycler view
         adapter = MyAdapter()
-        binding.myrecyclerview.setAdapter(adapter)
+        binding.myrecyclerview.adapter = adapter
     }
 
 /********************     Options Menu    ********************************************************/
@@ -44,7 +50,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.menu_item_sort_title) {
+        if (item.itemId == R.id.menu_item_add_note) {
+            addNewNote()
+            return true
+        } else if (item.itemId == R.id.menu_item_sort_title) {
             return true
         } else if (item.itemId == R.id.menu_sort_date) {
             return true
@@ -53,50 +62,65 @@ class MainActivity : AppCompatActivity() {
     }
 
     /********************     RecyclerView Inner Classes    ************************************/
-    inner class MyViewHolder(val itemView : View) :
-        RecyclerView.ViewHolder(itemView),
+    inner class MyViewHolder(val view: TextView) :
+        RecyclerView.ViewHolder(view),
         View.OnClickListener, View.OnLongClickListener {
 
 
         init {
-            itemView.findViewById<View>(R.id.item_constraintLayout)
-                .setOnClickListener(this)
-            itemView.findViewById<View>(R.id.item_constraintLayout)
-                .setOnLongClickListener(this)
+            view.setOnClickListener(this)
+            view.setOnLongClickListener(this)
         }
 
 
-        override fun onClick(v: View?) {
+        override fun onClick(view: View?) {
             TODO("Not yet implemented")
         }
 
-        override fun onLongClick(v: View?): Boolean {
+        override fun onLongClick(view: View?): Boolean {
             TODO("Not yet implemented")
         }
 
     }
 
     // Adapter
-    inner class MyAdapter() : RecyclerView.Adapter<MyViewHolder>() {
+    inner class MyAdapter() :
+        RecyclerView.Adapter<MyViewHolder>() {
+
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
             val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_view, parent, false)
+                .inflate(R.layout.item_view, parent, false) as TextView
             return MyViewHolder(view)
         }
 
         override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-            TODO("Not yet implemented")
+            val note = notes[position]
+            holder.view.setText("This is a test")
         }
 
         override fun getItemCount(): Int {
-            TODO("Not yet implemented")
+            return notes.size
         }
 
     }
 
     /********************     Methods    ********************************************************/
 
+    private val startForAddResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            result : ActivityResult ->
+
+            if (result.resultCode == Activity.RESULT_OK) {
+
+            }
+        }
+
     private fun addNewNote() {
         val intent = Intent(applicationContext, NoteActivity::class.java)
+        intent.putExtra(
+            getString(R.string.intent_purpose_key),
+            getString(R.string.intent_purpose_add_note)
+        )
+        startForAddResult.launch(intent)
     }
 }

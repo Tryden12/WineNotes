@@ -7,6 +7,7 @@ import com.tryden12.winenotes.databinding.ActivityNoteBinding
 class NoteActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityNoteBinding
+    private var purpose : String? = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -14,7 +15,11 @@ class NoteActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-
+        intent = getIntent()
+        purpose = intent.getStringExtra(
+            getString(R.string.intent_purpose_key)
+        )
+        title = "${purpose} Note"
     }
 
     override fun onBackPressed() {
