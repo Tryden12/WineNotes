@@ -92,7 +92,20 @@ class MainActivity : AppCompatActivity() {
 
 
         override fun onClick(view: View?) {
-            TODO("Not yet implemented")
+            val intent = Intent(applicationContext, NoteActivity::class.java)
+
+            intent.putExtra(
+                getString(R.string.intent_purpose_key),
+                getString(R.string.intent_update_note)
+            )
+
+            val note = notes[adapterPosition]
+            intent.putExtra(
+                getString(R.string.intent_note_id),
+                note.id
+            )
+
+            startForUpdateResult.launch(intent)
         }
 
         override fun onLongClick(view: View?): Boolean {
@@ -112,8 +125,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-            val note = notes[position].toString()
-            holder.view.setText("This is a test")
+            val note = notes[position]
+            holder.view.text = note.title
         }
 
         override fun getItemCount(): Int {
@@ -144,7 +157,16 @@ class MainActivity : AppCompatActivity() {
             result : ActivityResult ->
 
             if (result.resultCode == Activity.RESULT_OK) {
+                loadAllNotes()
+            }
+        }
 
+    private val startForUpdateResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            result : ActivityResult ->
+
+            if (result.resultCode == Activity.RESULT_OK) {
+                loadAllNotes()
             }
         }
 
