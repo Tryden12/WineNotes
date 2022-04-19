@@ -76,6 +76,7 @@ class MainActivity : AppCompatActivity() {
             sortNotesByTitle()
             return true
         } else if (item.itemId == R.id.menu_sort_date) {
+            sortNotesByLastModified()
             return true
         }
         return super.onOptionsItemSelected(item)
@@ -215,6 +216,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun sortNotesByLastModified() {
-        binding.myrecyclerview.getLayoutManager()?.scrollToPosition(0)
+        CoroutineScope(Dispatchers.IO).launch {
+            val db = AppDatabase.getDatabase(applicationContext)
+            val dao = db.noteDao()
+            val results = dao.sortByLastModified()
+
+            withContext(Dispatchers.Main) {
+                notes.clear()
+                notes.addAll(results)
+                adapter.notifyDataSetChanged()
+            }
+        }
     }
 }
