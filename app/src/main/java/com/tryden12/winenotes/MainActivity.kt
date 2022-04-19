@@ -198,4 +198,12 @@ class MainActivity : AppCompatActivity() {
         )
         startForAddResult.launch(intent)
     }
+
+    private fun sortNotesByTitle() {
+        binding.myrecyclerview.getLayoutManager()?.scrollToPosition(0)
+    }
+
+    private fun sortNotesByLastModified() {
+        binding.myrecyclerview.getLayoutManager()?.scrollToPosition(0)
+    }
 }
