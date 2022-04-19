@@ -1,5 +1,6 @@
 package com.tryden12.winenotes
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -10,6 +11,7 @@ import com.tryden12.winenotes.databinding.ActivityNoteBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class NoteActivity : AppCompatActivity() {
 
@@ -36,14 +38,19 @@ class NoteActivity : AppCompatActivity() {
                 getString(R.string.intent_note_id),
                 -1
             )
-/*
+
             // Load exiting note from db
             CoroutineScope(Dispatchers.IO).launch {
                 val note = AppDatabase.getDatabase(applicationContext)
                     .noteDao()
-                    .get
+                    .getNote(noteId)
+
+                withContext(Dispatchers.Main) {
+                    binding.titleEditText.setText(note.title)
+                    binding.titleEditText.setText(note.notes)
+                }
             }
-*/
+
         }
 
     }
@@ -67,20 +74,30 @@ class NoteActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             val noteDao = AppDatabase.getDatabase(applicationContext).noteDao()
 
-            val resultId : Long
-
             if (purpose.equals(getString(R.string.intent_purpose_add_note))) {
                 // add note to db
                 val note = Note(0, title, notes, date)
-                resultId = noteDao.addNote(note)
+                noteId = noteDao.addNote(note)
 
-                Log.i("STATUS_NOTE", "inserted new note: ${note}")
+                Log.i("STATUS_NOTE", "inserted new note: $note")
             } else {
                 // update the notes in the db
-                TODO("NOT IMPLEMENTED")
+                val note = Note(noteId, title, notes, date)
+                noteDao.updateNote(note)
+
+                Log.i("STATUS_NOTE", "updated existing note: $note")
             }
 
+            val intent = Intent()
+            intent.putExtra(
+                getString(R.string.intent_note_id),
+                noteId
+            )
+
+            withContext(Dispatchers.Main) {
+                setResult(RESULT_OK, intent)
+                super.onBackPressed()
+            }
         }
-        super.onBackPressed()
     }
 }
