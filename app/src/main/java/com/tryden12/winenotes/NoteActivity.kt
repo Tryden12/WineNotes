@@ -33,7 +33,6 @@ class NoteActivity : AppCompatActivity() {
                 getString(R.string.intent_purpose_key)
             )
             title = "${purpose} Note"
-
         }
 
         if (purpose.equals("Update")) {
