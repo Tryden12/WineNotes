@@ -23,4 +23,6 @@ interface NoteDao {
 
     @Query("SELECT * FROM note")
     fun getAllNotes() : List<Note>
+
+
 }

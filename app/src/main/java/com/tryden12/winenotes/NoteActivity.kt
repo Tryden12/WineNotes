@@ -15,6 +15,7 @@ class NoteActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityNoteBinding
     private var purpose : String? = ""
+    private var noteId : Long = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,11 +23,29 @@ class NoteActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-        intent = getIntent()
-        purpose = intent.getStringExtra(
-            getString(R.string.intent_purpose_key)
-        )
-        title = "${purpose} Note"
+        // Get intent and apply title
+        intent = (intent).apply {
+            purpose = intent.getStringExtra(
+                getString(R.string.intent_purpose_key)
+            )
+            title = "${purpose} Note"
+        }
+
+        if (purpose.equals("Update")) {
+            noteId = intent.getLongExtra(
+                getString(R.string.intent_note_id),
+                -1
+            )
+/*
+            // Load exiting note from db
+            CoroutineScope(Dispatchers.IO).launch {
+                val note = AppDatabase.getDatabase(applicationContext)
+                    .noteDao()
+                    .get
+            }
+*/
+        }
+
     }
 
     override fun onBackPressed() {
