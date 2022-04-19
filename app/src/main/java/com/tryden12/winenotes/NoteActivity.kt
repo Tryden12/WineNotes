@@ -33,15 +33,7 @@ class NoteActivity : AppCompatActivity() {
                 getString(R.string.intent_purpose_key)
             )
             title = "${purpose} Note"
-            // get the current date and time as a timestamp )
-            val now = Date()
 
-            // Set up a date formatter to support ISO 8601 format and UTC time zone
-            val databaseDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-            databaseDateFormat.timeZone = TimeZone.getTimeZone("UTC")
-
-            // Convert timestamp to ISO 8601 format
-            var dateString : String = databaseDateFormat.format(now)
         }
 
         if (purpose.equals("Update")) {
@@ -56,10 +48,81 @@ class NoteActivity : AppCompatActivity() {
                     .noteDao()
                     .getNote(noteId)
 
+                // get the current date and time as a timestamp )
+                val now = Date()
+
+                // Set up a date formatter to support ISO 8601 format and UTC time zone
+                val databaseDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+                databaseDateFormat.timeZone = TimeZone.getTimeZone("UTC")
+
+                // Convert timestamp to ISO 8601 format
+                var dateString : String = databaseDateFormat.format(now)
+
+                // create a parser to convert the date string from the database
+                // to a java.util.Date object
+                val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+                parser.timeZone = TimeZone.getTimeZone("UTC")
+
+                // convert the date string from the database to the Date object
+                val dateInDatabase : Date = parser.parse(dateString)
+
+                // create a formatter that will convert the date to the format // you want the user to see on screen. This will use the
+                // time zone the user is currently in.
+                val displayFormat = SimpleDateFormat("HH:mm a MM/yyyy ")
+
+
+                // convert the temporary Date object from the database
+                // to a string for the user to see
+                val displayString : String = displayFormat.format(dateInDatabase)
+
+
+
+
                 withContext(Dispatchers.Main) {
                     binding.titleEditText.setText(note.title)
                     binding.notesEditText.setText(note.notes)
-                    binding.dateTextView.setText(note.lastModified)
+                    binding.dateTextView.text = displayString
+                }
+            }
+        } else {
+            // Load exiting note from db
+            CoroutineScope(Dispatchers.IO).launch {
+                val note = AppDatabase.getDatabase(applicationContext)
+                    .noteDao()
+                    .getNote(noteId)
+
+                // get the current date and time as a timestamp )
+                val now = Date()
+
+                // Set up a date formatter to support ISO 8601 format and UTC time zone
+                val databaseDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+                databaseDateFormat.timeZone = TimeZone.getTimeZone("UTC")
+
+                // Convert timestamp to ISO 8601 format
+                var dateString : String = databaseDateFormat.format(now)
+
+                // create a parser to convert the date string from the database
+                // to a java.util.Date object
+                val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+                parser.timeZone = TimeZone.getTimeZone("UTC")
+
+                // convert the date string from the database to the Date object
+                val dateInDatabase : Date = parser.parse(dateString)
+
+                // create a formatter that will convert the date to the format // you want the user to see on screen. This will use the
+                // time zone the user is currently in.
+                val displayFormat = SimpleDateFormat("HH:mm a MM/yyyy ")
+
+
+                // convert the temporary Date object from the database
+                // to a string for the user to see
+                val displayString : String = displayFormat.format(dateInDatabase)
+
+
+
+
+                withContext(Dispatchers.Main) {
+                    binding.dateTextView.text = displayString
                 }
             }
 
