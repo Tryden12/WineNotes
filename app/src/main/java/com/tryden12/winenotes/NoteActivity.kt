@@ -113,7 +113,6 @@ class NoteActivity : AppCompatActivity() {
                 // time zone the user is currently in.
                 val displayFormat = SimpleDateFormat("HH:mm a MM/yyyy ")
 
-
                 // convert the temporary Date object from the database
                 // to a string for the user to see
                 val displayString : String = displayFormat.format(dateInDatabase)
