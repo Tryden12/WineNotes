@@ -47,7 +47,7 @@ class NoteActivity : AppCompatActivity() {
 
                 withContext(Dispatchers.Main) {
                     binding.titleEditText.setText(note.title)
-                    binding.titleEditText.setText(note.notes)
+                    binding.notesEditText.setText(note.notes)
                 }
             }
 
