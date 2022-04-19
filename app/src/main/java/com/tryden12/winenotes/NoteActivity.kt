@@ -12,6 +12,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.*
 
 class NoteActivity : AppCompatActivity() {
 
@@ -31,6 +33,15 @@ class NoteActivity : AppCompatActivity() {
                 getString(R.string.intent_purpose_key)
             )
             title = "${purpose} Note"
+            // get the current date and time as a timestamp )
+            val now = Date()
+
+            // Set up a date formatter to support ISO 8601 format and UTC time zone
+            val databaseDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+            databaseDateFormat.timeZone = TimeZone.getTimeZone("UTC")
+
+            // Convert timestamp to ISO 8601 format
+            var dateString : String = databaseDateFormat.format(now)
         }
 
         if (purpose.equals("Update")) {
@@ -48,6 +59,7 @@ class NoteActivity : AppCompatActivity() {
                 withContext(Dispatchers.Main) {
                     binding.titleEditText.setText(note.title)
                     binding.notesEditText.setText(note.notes)
+                    binding.dateTextView.setText(note.lastModified)
                 }
             }
 
@@ -57,6 +69,16 @@ class NoteActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         val date = ""
+        // get the current date and time as a timestamp )
+        val now : Date = Date()
+
+        // Set up a date formatter to support ISO 8601 format and UTC time zone
+        val databaseDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+        databaseDateFormat.timeZone = TimeZone.getTimeZone("UTC")
+
+        // Convert timestamp to ISO 8601 format
+        var dateString : String = databaseDateFormat.format(now)
+
         val title = binding.titleEditText.text.toString().trim()
         if (title.isEmpty()) {
             Toast.makeText(applicationContext,
@@ -76,13 +98,13 @@ class NoteActivity : AppCompatActivity() {
 
             if (purpose.equals(getString(R.string.intent_purpose_add_note))) {
                 // add note to db
-                val note = Note(0, title, notes, date)
+                val note = Note(0, title, notes, dateString)
                 noteId = noteDao.addNote(note)
 
                 Log.i("STATUS_NOTE", "inserted new note: $note")
             } else {
                 // update the notes in the db
-                val note = Note(noteId, title, notes, date)
+                val note = Note(noteId, title, notes, dateString)
                 noteDao.updateNote(note)
 
                 Log.i("STATUS_NOTE", "updated existing note: $note")
