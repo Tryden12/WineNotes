@@ -73,6 +73,7 @@ class MainActivity : AppCompatActivity() {
             addNewNote()
             return true
         } else if (item.itemId == R.id.menu_item_sort_title) {
+            sortNotesByTitle()
             return true
         } else if (item.itemId == R.id.menu_sort_date) {
             return true
@@ -200,7 +201,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun sortNotesByTitle() {
-        binding.myrecyclerview.getLayoutManager()?.scrollToPosition(0)
+        CoroutineScope(Dispatchers.IO).launch {
+            val db = AppDatabase.getDatabase(applicationContext)
+            val dao = db.noteDao()
+            val results = dao.sortByTitle()
+
+            withContext(Dispatchers.Main) {
+                notes.clear()
+                notes.addAll(results)
+                adapter.notifyDataSetChanged()
+            }
+        }
     }
 
     private fun sortNotesByLastModified() {
