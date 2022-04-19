@@ -1,6 +1,7 @@
 package com.tryden12.winenotes
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -109,7 +110,26 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun onLongClick(view: View?): Boolean {
-            TODO("Not yet implemented")
+            val note = notes[adapterPosition]
+
+            val builder = AlertDialog.Builder(view!!.context)
+                .setTitle("Confirm Delete")
+                .setMessage("Are you sure you want to delete " +
+                    "${note.title}?")
+                .setNegativeButton(android.R.string.cancel, null)
+                .setPositiveButton(android.R.string.ok) {
+                    dialogInterface, whichButton ->
+
+                    CoroutineScope(Dispatchers.IO).launch {
+                        AppDatabase.getDatabase(applicationContext)
+                            .noteDao()
+                            .deleteNote(note)
+
+                        loadAllNotes()
+                    }
+                }
+            builder.show()
+            return true
         }
 
     }
