@@ -1,10 +1,11 @@
 # WineNotes 
 <br />
-<br />
-<br />
-# Summary
-WineNotes is a note taking app for an wine tasting event
 
+# Summary
+WineNotes is a convenient note taking app that will allow anyone to quickly jot down notes 
+about a particular wine when needed. If you're at a vineyard, a festival, a grocery store, or a 
+friends house, you can take note of the wine you tried and liked to remember for later!
+<br />
 
 # Screenshots:
 ![Splash Screen](/screenshots/splash.png?raw=true "Splash Screen")
