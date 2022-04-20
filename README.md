@@ -15,4 +15,5 @@ for simplicity and a Dao interface is used to add, update, delete, and query the
 
 # Screenshots:
 ![Splash Screen](/screenshots/splash2.png?raw=true "Splash Screen")
+<br />
 ![Home Screen](/screenshots/home.png?raw=true "Home Screen")
