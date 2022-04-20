@@ -18,4 +18,5 @@ for simplicity and a Dao interface is used to add, update, delete, and query the
 <br />
 ![Home Screen](/screenshots/home.png?raw=true "Home Screen")
 <br />
+
 ![Add Note](/screenshots/note.png?raw=true "Add Note")
