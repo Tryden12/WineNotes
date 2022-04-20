@@ -1,10 +1,15 @@
 # WineNotes 
+WineNotes is a convenient note taking app that will allow anyone to quickly jot down notes
+about a particular wine when needed. If you're at a vineyard, a festival, a grocery store, or a
+friends house, you can take note of the wine you tried and liked to remember for later!
+<br />
 <br />
 
-# Summary
-WineNotes is a convenient note taking app that will allow anyone to quickly jot down notes 
-about a particular wine when needed. If you're at a vineyard, a festival, a grocery store, or a 
-friends house, you can take note of the wine you tried and liked to remember for later!
+# Summary of Code
+This app uses many fundamentals that include Coroutines, RecyclerView, MenuOptions, and a connected 
+database. The database is setup using Room API to access an SQLite database. One table is created 
+for simplicity and a Dao interface is used to add, update, delete, and query the notes. 
+
 <br />
 <br />
 
