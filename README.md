@@ -20,4 +20,4 @@ for simplicity and a Dao interface is used to add, update, delete, and query the
 <br />
 ![Add Note](/screenshots/note.png?raw=true "Add Note")
 <br />
-![Home Menu](/screenshots/homemenu.png?raw=true "Home Menu")
+![Home Menu](/screenshots/homemenu1.png?raw=true "Home Menu")
