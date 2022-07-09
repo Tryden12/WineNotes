@@ -1,4 +1,4 @@
-package com.tryden12.winenotes;
+package com.tryden12.winenotes.view;
 
 import android.content.Intent;
 import android.os.Bundle;

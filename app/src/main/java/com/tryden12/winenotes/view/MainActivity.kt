@@ -1,21 +1,20 @@
-package com.tryden12.winenotes
+package com.tryden12.winenotes.view
 
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.tryden12.winenotes.database.AppDatabase
-import com.tryden12.winenotes.database.Note
+import com.tryden12.winenotes.R
+import com.tryden12.winenotes.adapter.Adapter
+import com.tryden12.winenotes.data.database.AppDatabase
 import com.tryden12.winenotes.databinding.ActivityMainBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -25,8 +24,8 @@ import kotlinx.coroutines.withContext
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var adapter : MyAdapter
-    private val notes = mutableListOf<Note>()
+    private lateinit var adapter : Adapter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +34,7 @@ class MainActivity : AppCompatActivity() {
 
         // Setup Layout Manager
         val layoutManager = LinearLayoutManager(this)
-        binding.myrecyclerview.setLayoutManager(layoutManager)
+        binding.myrecyclerview.layoutManager = layoutManager
 
         // Add divider
         val divider = DividerItemDecoration(
@@ -44,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         binding.myrecyclerview.addItemDecoration(divider)
 
         // Bind adapter to recycler view
-        adapter = MyAdapter()
+        adapter = Adapter()
         binding.myrecyclerview.adapter = adapter
 
 
@@ -157,75 +156,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    /********************     Methods    ********************************************************/
 
-    private fun loadAllNotes() {
-        CoroutineScope(Dispatchers.IO).launch {
-            val db = AppDatabase.getDatabase(applicationContext)
-            val dao = db.noteDao()
-            val results = dao.getAllNotes()
 
-            withContext(Dispatchers.Main) {
-                notes.clear()
-                notes.addAll(results)
-                adapter.notifyDataSetChanged()
-            }
-        }
-
-    }
-
-    private val startForAddResult =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            result : ActivityResult ->
-
-            if (result.resultCode == Activity.RESULT_OK) {
-                loadAllNotes()
-            }
-        }
-
-    private val startForUpdateResult =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            result : ActivityResult ->
-
-            if (result.resultCode == Activity.RESULT_OK) {
-                loadAllNotes()
-            }
-        }
-
-    private fun addNewNote() {
-        val intent = Intent(applicationContext, NoteActivity::class.java)
-        intent.putExtra(
-            getString(R.string.intent_purpose_key),
-            getString(R.string.intent_purpose_add_note)
-        )
-        startForAddResult.launch(intent)
-    }
-
-    private fun sortNotesByTitle() {
-        CoroutineScope(Dispatchers.IO).launch {
-            val db = AppDatabase.getDatabase(applicationContext)
-            val dao = db.noteDao()
-            val results = dao.sortByTitle()
-
-            withContext(Dispatchers.Main) {
-                notes.clear()
-                notes.addAll(results)
-                adapter.notifyDataSetChanged()
-            }
-        }
-    }
-
-    private fun sortNotesByLastModified() {
-        CoroutineScope(Dispatchers.IO).launch {
-            val db = AppDatabase.getDatabase(applicationContext)
-            val dao = db.noteDao()
-            val results = dao.sortByLastModified()
-
-            withContext(Dispatchers.Main) {
-                notes.clear()
-                notes.addAll(results)
-                adapter.notifyDataSetChanged()
-            }
-        }
-    }
 }

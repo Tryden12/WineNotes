@@ -10,14 +10,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WineNotes">
         <activity
-            android:name=".NoteActivity"
+            android:name=".view.NoteActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".view.MainActivity"
             android:exported="true"
             android:label="Home Page" />
         <activity
-            android:name=".SplashScreen"
+            android:name=".view.SplashScreen"
             android:exported="true"
             android:theme="@style/SplashScreen">
             <intent-filter>

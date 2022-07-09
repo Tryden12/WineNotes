@@ -1,4 +1,4 @@
-package com.tryden12.winenotes.database
+package com.tryden12.winenotes.data.database
 
 import androidx.room.*
 

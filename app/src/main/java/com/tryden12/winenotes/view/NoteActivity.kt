@@ -1,12 +1,13 @@
-package com.tryden12.winenotes
+package com.tryden12.winenotes.view
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import com.tryden12.winenotes.database.AppDatabase
-import com.tryden12.winenotes.database.Note
+import com.tryden12.winenotes.R
+import com.tryden12.winenotes.data.database.AppDatabase
+import com.tryden12.winenotes.data.database.Note
 import com.tryden12.winenotes.databinding.ActivityNoteBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
